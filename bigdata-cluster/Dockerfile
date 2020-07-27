@@ -1,16 +1,15 @@
 FROM ubuntu:16.04
-#**************************************** INSTALLLING java ******************************
 RUN apt-get -y update
 RUN apt-get -y upgrade 
-RUN apt-get -y install openjdk-8-jdk
+
+#**************************************** INSTALLLING java ******************************
+RUN apt-get -y install default-jdk
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH $PATH:/usr/lib/jvm/java-8-openjdk-amd64/bin
 RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >>~/.bash_profile
 RUN echo "export PATH=$PATH:/usr/lib/jvm/java-8-openjdk-amd64/bin" >>~/.bash_profile
 
 #**************************************** INSTALLING rsync vim sudo openssh-server ssh ******************************
-RUN apt-get -y update
-RUN apt-get -y upgrade 
 RUN apt-get -y install rsync
 RUN apt-get -y install vim sudo
 RUN apt-get -y install openssh-server
@@ -53,7 +52,7 @@ RUN echo "export PATH=$PATH:$HIVE_HOME/bin" >>~/.bash_profile
 #**************************************** INSTALLING spark and configure ******************************
 RUN apt-get -y install scala
 RUN mkdir spark
-RUN wget -P /spark/ http://mirrors.estointernet.in/apache/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz
+RUN wget -P /spark/ https://archive.apache.org/dist/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.7.tgz
 RUN tar -xzvf /spark/spark-2.4.3-bin-hadoop2.7.tgz -C /spark
 ADD ./config/hive-site.xml ./spark/spark-2.4.3-bin-hadoop2.7/conf
 ADD ./config/core-site.xml ./spark/spark-2.4.3-bin-hadoop2.7/conf
@@ -76,13 +75,13 @@ RUN echo "export PATH=$PATH:$SQOOP_HOME/bin" >>~/.bash_profile
 
 #**************************************** INSTALLING NiFi and configure ******************************
 RUN mkdir nifi
-RUN wget -P /nifi http://mirrors.estointernet.in/apache/nifi/1.9.2/nifi-1.9.2-bin.tar.gz
+RUN wget -P /nifi https://archive.apache.org/dist/nifi/1.9.2/nifi-1.9.2-bin.tar.gz
 RUN tar -xzvf /nifi/nifi-1.9.2-bin.tar.gz -C /nifi
 RUN /nifi/nifi-1.9.2/bin/nifi.sh install
 
 #**************************************** INSTALLING Kafka and configure ******************************
 RUN mkdir kafka
-RUN wget -P /kafka http://apache.cs.utah.edu/kafka/2.2.0/kafka_2.11-2.2.0.tgz
+RUN wget -P /kafka https://archive.apache.org/dist/kafka/2.2.0/kafka_2.11-2.2.0.tgz
 RUN tar -xzvf /kafka/kafka_2.11-2.2.0.tgz -C /kafka
 ENV KAFKA_HOME /kafka/kafka_2.11-2.2.0
 ENV PATH $PATH:$KAFKA_HOME/bin
